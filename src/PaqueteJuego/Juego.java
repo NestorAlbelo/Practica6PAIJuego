@@ -11,7 +11,6 @@ import PaqueteObjeto.*;
 import PaquetePersonaje.*;
 import VentanaJuego.Ventana;
 
-//static final int 
 
 public class Juego {
 	private Ventana vent;
@@ -69,10 +68,11 @@ public class Juego {
 	}
 	
 	public boolean posLibre(int posicionX, int posicionY){
-		if(choqueObstaculo(posicionX, posicionY) ==true){
-			return false;
+		for (int i = 0; i < listaObjetos.size(); i++){
+			if(( (listaObjetos.get(i).getPosX() >= posicionX) && (listaObjetos.get(i).getPosX() <= (posicionX + Ventana.getDiametroImagen())) ) && ( (listaObjetos.get(i).getPosY() >= posicionY) && (listaObjetos.get(i).getPosY() <= (posicionY + Ventana.getDiametroImagen())) ) )
+				return false;
 		}
-		for (int i = 0; i< listaPersonajes.size(); i++){
+		for (int i = 0; i < listaPersonajes.size(); i++){
 			if(  ( (listaPersonajes.get(i).getPosX() >= posicionX) && (listaPersonajes.get(i).getPosX() <= (posicionX + Ventana.getDiametroImagen())) ) && ( (listaPersonajes.get(i).getPosY() >= posicionY) && (listaPersonajes.get(i).getPosY() <= (posicionY + Ventana.getDiametroImagen())) )  )
 				return false;
 		}
@@ -146,7 +146,7 @@ public class Juego {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	//Metodo de Creacion de Personajes y Objetos
-	public void generarObjetosYPersonajes(int numeroEnemigos, int numeroRocas) throws IOException{
+	public void generarObjetosYPersonajes(int numeroEnemigos, int numeroRocas, int numeroLocos) throws IOException{
 		Random rand = new Random();
 		int posicionX, posicionY;
 		
@@ -194,6 +194,13 @@ public class Juego {
 				}while(!posLibre(posicionX, posicionY));
 				listaPersonajes.add(new Personaje((new EnemigoNieve()), this, this.vent, posicionX, posicionY));
 			}
+			for (int i=0; i < numeroLocos; i++){
+				do{		
+					posicionX = rand.nextInt(Ventana.getAnchoVentana()-Ventana.getDiametroImagen());
+					posicionY = rand.nextInt(Ventana.getAltoVentana()-Ventana.getDiametroImagen());
+				}while(!posLibre(posicionX, posicionY));
+				listaPersonajes.add(new Personaje((new LocoNieve()), this, this.vent, posicionX, posicionY));
+			}
 		}
 		else if(this.tipoJuego.getClass() == new JuegoCueva().getClass() ){
 			Heroe = new Personaje((new HeroeCueva()), this, this.vent, posXInicio, posYInicio);
@@ -203,6 +210,13 @@ public class Juego {
 					posicionY = rand.nextInt(Ventana.getAltoVentana()-Ventana.getDiametroImagen());
 				}while(!posLibre(posicionX, posicionY));
 				listaPersonajes.add(new Personaje((new EnemigoCueva()), this, this.vent, posicionX, posicionY));
+			}
+			for (int i=0; i < numeroLocos; i++){
+				do{		
+					posicionX = rand.nextInt(Ventana.getAnchoVentana()-Ventana.getDiametroImagen());
+					posicionY = rand.nextInt(Ventana.getAltoVentana()-Ventana.getDiametroImagen());
+				}while(!posLibre(posicionX, posicionY));
+				listaPersonajes.add(new Personaje((new LocoCueva()), this, this.vent, posicionX, posicionY));
 			}
 		}		
 	}

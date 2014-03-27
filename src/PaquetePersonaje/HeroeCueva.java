@@ -2,10 +2,7 @@ package PaquetePersonaje;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.Vector;
-
 import javax.imageio.ImageIO;
-
 import VentanaJuego.Ventana;
 import PaqueteObjeto.*;
 

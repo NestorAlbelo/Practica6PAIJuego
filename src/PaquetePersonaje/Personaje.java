@@ -2,8 +2,6 @@ package PaquetePersonaje;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.Vector;
-
 import PaqueteJuego.Juego;
 import VentanaJuego.Ventana;
 
@@ -22,6 +20,7 @@ public class Personaje {
 	private Image imagenMuerto;
 	private final int VIDA_HEROE = 100;
 	private final int VIDA_ENEMIGO = 50;
+	private final int VIDA_LOCO = 2000;
 	private final int VELOCIDAD_MOV = 50000/Ventana.getDiametroImagen();
 	private static final int ARRIBA = 0;
 	private static final int ABAJO= 1;
@@ -42,6 +41,8 @@ public class Personaje {
 			this.vida = VIDA_HEROE;
 		else if(tipo.getClass() == (new EnemigoNieve().getClass()) || tipo.getClass() == (new EnemigoCueva().getClass()))
 			this.vida = VIDA_ENEMIGO;
+		else if(tipo.getClass() == (new LocoNieve().getClass()) || tipo.getClass() == (new LocoCueva().getClass()))
+			this.vida = VIDA_LOCO;
 	}
 	
 	public void getDamage(int herida){
@@ -57,7 +58,10 @@ public class Personaje {
 			this.tipoPersonaje = tipo;
 		//Si el objeto actual es un enemigo y el tipo entrante tambien se cambia
 		else if((tipo.getClass() == (new EnemigoNieve().getClass()) || tipo.getClass() == (new EnemigoCueva().getClass())) && ((this.tipoPersonaje.getClass() == (new EnemigoNieve().getClass())) || (this.tipoPersonaje.getClass() == (new EnemigoCueva().getClass()))))
-			this.tipoPersonaje = tipo;	
+			this.tipoPersonaje = tipo;
+		
+		else if((tipo.getClass() == (new LocoNieve().getClass()) || tipo.getClass() == (new LocoCueva().getClass())) && ((this.tipoPersonaje.getClass() == (new LocoNieve().getClass())) || (this.tipoPersonaje.getClass() == (new LocoCueva().getClass()))))
+			this.tipoPersonaje = tipo;
 		
 		this.tipoPersonaje.cambiarImagenes(this);
 	}
@@ -86,13 +90,14 @@ public class Personaje {
 
 	private boolean personajeCerca(Personaje p){
 		int Diametro = Ventana.getDiametroImagen();
+		int Distancia = 4;
 		//Si esta por la derecha o por la izquierda
-		if((((this.getPosX() >= (p.getPosX() + Diametro))   &&   (this.getPosX() <= (p.getPosX() + Diametro*5/4))) || (((this.getPosX() + Diametro) <= p.getPosX())   &&   ((this.getPosX() + Diametro)  >= (p.getPosX() - Diametro/4))) )  &&   ((this.getPosY() >= p.getPosY())  &&  (  this.getPosY() <= (p.getPosY() + Diametro)))){
-			return true;
+		if((((this.getPosX() >= (p.getPosX() + Diametro))   &&   (this.getPosX() <= (p.getPosX() + Diametro*5/Distancia))) || (((this.getPosX() + Diametro) <= p.getPosX())   &&   ((this.getPosX() + Diametro)  >= (p.getPosX() - Diametro/Distancia))) )  &&   ((this.getPosY() >= p.getPosY())  &&  (  this.getPosY() <= (p.getPosY() + Diametro)))){
+            return true;
 		}
 		//Si esta por arriba o por abajo
-		else if((((this.getPosY() >= (p.getPosY() + Diametro))   &&   (this.getPosY() <= (p.getPosY() + Diametro*5/4))) || (((this.getPosY() + Diametro) <= p.getPosY())   &&   ((this.getPosY() + Diametro)  >= (p.getPosY() - Diametro/4))) )  &&   ((this.getPosX() >= p.getPosX())  &&  (  this.getPosX() <= (p.getPosX() + Diametro)))){
-			return true;
+		else if((((this.getPosY() >= (p.getPosY() + Diametro))   &&   (this.getPosY() <= (p.getPosY() + Diametro*5/Distancia))) || (((this.getPosY() + Diametro) <= p.getPosY())   &&   ((this.getPosY() + Diametro)  >= (p.getPosY() - Diametro/Distancia))) )  &&   ((this.getPosX() >= p.getPosX())  &&  (  this.getPosX() <= (p.getPosX() + Diametro)))){
+            return true;
 		}
 		return false;
 	}

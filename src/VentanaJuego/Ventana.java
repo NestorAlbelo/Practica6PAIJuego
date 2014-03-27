@@ -13,6 +13,8 @@ public class Ventana extends JComponent {
 	private static int DIAMETRO_IMAGEN;
 	private static int NUMEROENEMIGOS;
 	private static int NUMEROBSTACULOS;
+	private static int NUMEROLOCOS;
+	private static InterfazJuego INTERFAZJUEGO;
 	private static int GAMEOVER = -1;
 	private static int WIN = 1;
 	private static int CONTINUAR = 0;
@@ -20,7 +22,7 @@ public class Ventana extends JComponent {
 	private static float dt = (float)(652000.0 / 1000000000);
 	private static Juego game;
 	
-	public Ventana(InterfazJuego tipoJuego, int AnchoVentan, int AltoVentana, int NumeroObstaculos, int NumeroEnemigos) throws IOException{
+	public Ventana(InterfazJuego tipoJuego, int AnchoVentana, int AltoVentana, int DiametroImagen, int NumeroEnemigos, int NumeroObstaculos, int NumeroLocos) throws IOException{
 		//Creamos la ventana principal
 		JFrame jf = new JFrame("Ventana Juego");
         jf.addWindowListener(new WindowAdapter() {
@@ -28,13 +30,18 @@ public class Ventana extends JComponent {
                     System.exit(0);
                 }
         });
-        jf.setResizable(false);																									
-		setPreferredSize(new Dimension(ANCHO_VENTANA,ALTO_VENTANA));	
-		
-		
-		//Creamos el juego con tipo Nieve
-		game = new Juego(this, new JuegoNieve());
-		game.generarObjetosYPersonajes(NUMEROENEMIGOS,NUMEROBSTACULOS);
+        jf.setResizable(false);	
+
+		INTERFAZJUEGO = tipoJuego;
+		ANCHO_VENTANA = AnchoVentana;
+		ALTO_VENTANA = AltoVentana;
+		DIAMETRO_IMAGEN = DiametroImagen;
+		NUMEROENEMIGOS = NumeroEnemigos;
+		NUMEROBSTACULOS = NumeroObstaculos;
+		NUMEROLOCOS = NumeroLocos;
+		setPreferredSize(new Dimension(ANCHO_VENTANA,ALTO_VENTANA));
+		game = new Juego(this, INTERFAZJUEGO);
+		game.generarObjetosYPersonajes(NUMEROENEMIGOS,NUMEROBSTACULOS,NUMEROLOCOS);
 		
 
 		//Creamos el Listener de las teclas 
@@ -46,7 +53,6 @@ public class Ventana extends JComponent {
                   try {
 					actualiza(e.getKeyCode(), true);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
               }
@@ -56,7 +62,6 @@ public class Ventana extends JComponent {
                   try {
 					actualiza(e.getKeyCode(), false);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
               }
@@ -85,6 +90,7 @@ public class Ventana extends JComponent {
               }
 		});
 		setFocusable(true);
+		jf.setResizable(true);
         jf.getContentPane().add(this);
         jf.pack();
         jf.setVisible(true);
